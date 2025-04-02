@@ -22,7 +22,7 @@ def encrypt(n,m):
 
         print('\n----------  ORIGINAL MSG   ------------')
         print(msg)
-        print('\n----------  DECRYPTED MSG  ------------')
+        print('\n----------  ENCRYPTED MSG  ------------')
         print(coded_msg)
 
 
