@@ -6,9 +6,9 @@ if not os.path.exists('raw_text.txt'):
 else:
       # If 'raw_text.txt' exists, proceed to ask for values of n and m
     def encrypt(n, m):
-        #with open('raw_text.txt', 'r', encoding='utf-8') as rawtxt:
-         #   msg = rawtxt.read()       # Read the message from the file
-        msg ='a'
+        with open('raw_text.txt', 'r', encoding='utf-8') as rawtxt:
+           msg = rawtxt.read()       # Read the message from the file
+    
 
         coded_msg = ''  # Variable to accumulate the encrypted message
         for item in msg:
