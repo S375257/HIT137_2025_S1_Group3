@@ -1,0 +1,64 @@
+import turtle
+
+# Recursive function to draw the tree
+def draw_tree(length, depth, left_angle, right_angle, reduction_factor):
+    if depth == 0:
+        return
+
+    # Draw the main branch
+    turtle.forward(length)
+
+    # Save current position and heading
+    current_position = turtle.position()
+    current_heading = turtle.heading()
+
+    # Draw left branch
+    turtle.left(left_angle)
+    draw_tree(length * reduction_factor, depth - 1, left_angle, right_angle, reduction_factor)
+
+    # Restore position and heading
+    turtle.penup()
+    turtle.setposition(current_position)
+    turtle.setheading(current_heading)
+    turtle.pendown()
+
+    # Draw right branch
+    turtle.right(right_angle)
+    draw_tree(length * reduction_factor, depth - 1, left_angle, right_angle, reduction_factor)
+
+    # Return to current position
+    turtle.penup()
+    turtle.setposition(current_position)
+    turtle.setheading(current_heading)
+    turtle.pendown()
+
+# ===== User Input =====
+try:
+    left_angle = float(input("Enter left branch angle (degrees): "))
+    right_angle = float(input("Enter right branch angle (degrees): "))
+    initial_length = float(input("Enter starting branch length (pixels): "))
+    depth = int(input("Enter recursion depth (e.g., 5): "))
+    reduction_factor = float(input("Enter branch length reduction factor (e.g., 0.7): "))
+except ValueError:
+    print("Invalid input. Please enter numeric values.")
+    exit()
+
+# ===== Turtle Setup =====
+turtle.title("Recursive Tree")
+turtle.speed("fastest")
+turtle.left(90)  # Start pointing upward
+turtle.penup()
+turtle.goto(0, -250)  # Start near the bottom of the screen
+turtle.pendown()
+turtle.pensize(8)
+turtle.color("brown")
+
+# Draw the trunk and tree
+turtle.forward(initial_length)
+turtle.pensize(2)
+turtle.color("green")
+draw_tree(initial_length * reduction_factor, depth - 1, left_angle, right_angle, reduction_factor)
+
+# Exit on click
+turtle.hideturtle()
+turtle.done()

@@ -1,0 +1,84 @@
+import os
+import pandas as pd
+import numpy as np
+from collections import defaultdict
+
+# Path to the folder containing temperature CSV files
+data_folder = "temperature_data/temperature_data"
+
+# Define month-to-season mapping
+season_months = {
+    "Summer": ["December", "January", "February"],
+    "Autumn": ["March", "April", "May"],
+    "Winter": ["June", "July", "August"],
+    "Spring": ["September", "October", "November"]
+}
+
+# Store temperature data for each station
+station_data = defaultdict(lambda: {
+    "monthly_temps": defaultdict(list),
+    "all_temps": []
+})
+
+# Read and aggregate data from all CSV files
+csv_files = [f for f in os.listdir(data_folder) if f.endswith('.csv')]
+for file in csv_files:
+    df = pd.read_csv(os.path.join(data_folder, file))
+    for _, row in df.iterrows():
+        station = row["STATION_NAME"]
+        for month in season_months["Summer"] + season_months["Autumn"] + season_months["Winter"] + season_months["Spring"]:
+            temp = row[month]
+            if pd.notnull(temp):
+                station_data[station]["monthly_temps"][month].append(temp)
+                station_data[station]["all_temps"].append(temp)
+
+# Calculate average temperature for each season
+season_averages = {}
+for season, months in season_months.items():
+    all_month_temps = []
+    for station in station_data.values():
+        for month in months:
+            all_month_temps.extend(station["monthly_temps"][month])
+    season_averages[season] = round(np.mean(all_month_temps), 2)
+
+# Write average seasonal temperatures to file
+with open("average_temp.txt", "w") as f:
+    f.write("Average Seasonal Temperatures Across All Stations and Years:\n")
+    for season, avg in season_averages.items():
+        f.write(f"{season}: {avg}°C\n")
+
+# Calculate temperature ranges and averages per station
+station_ranges = {}
+station_averages = {}
+
+for station, data in station_data.items():
+    temps = data["all_temps"]
+    if temps:
+        station_ranges[station] = max(temps) - min(temps)
+        station_averages[station] = np.mean(temps)
+
+# Identify station(s) with the largest temperature range
+max_range = max(station_ranges.values())
+largest_range_stations = [s for s, r in station_ranges.items() if r == max_range]
+
+with open("largest_temp_range_station.txt", "w") as f:
+    f.write("Station(s) with the Largest Temperature Range:\n")
+    f.write(f"Range: {max_range:.2f}°C\n")
+    for station in largest_range_stations:
+        f.write(f"{station}\n")
+
+# Identify warmest and coolest station(s)
+max_avg = max(station_averages.values())
+min_avg = min(station_averages.values())
+warmest_stations = [s for s, a in station_averages.items() if a == max_avg]
+coolest_stations = [s for s, a in station_averages.items() if a == min_avg]
+
+with open("warmest_and_coolest_station.txt", "w") as f:
+    f.write("Warmest Station(s):\n")
+    f.write(f"Average Temp: {max_avg:.2f}°C\n")
+    for station in warmest_stations:
+        f.write(f"{station}\n")
+    f.write("\nCoolest Station(s):\n")
+    f.write(f"Average Temp: {min_avg:.2f}°C\n")
+    for station in coolest_stations:
+        f.write(f"{station}\n")

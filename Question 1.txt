@@ -1,0 +1,70 @@
+def encrypt_char(char, n, m):
+    # Encrypt a single character based on its type and rules
+    if char.islower():
+        shift = n * m
+        return chr((ord(char) - ord('a') + shift) % 26 + ord('a'))
+    elif char.isupper():
+        shift = m ** 2
+        return chr((ord(char) - ord('A') + shift) % 26 + ord('A'))
+    return char  # Non-alphabetic characters unchanged
+
+def decrypt_char(char, n, m):
+    # Decrypt a single character by reversing the encryption rules
+    if char.islower():
+        shift = n * m
+        return chr((ord(char) - ord('a') - shift) % 26 + ord('a'))
+    elif char.isupper():
+        shift = m ** 2
+        return chr((ord(char) - ord('A') - shift) % 26 + ord('A'))
+    return char
+
+def encrypt_text(text, n, m):
+    # Encrypt an entire string using the defined rules
+    return ''.join(encrypt_char(c, n, m) for c in text)
+
+def decrypt_text(text, n, m):
+    # Decrypt an entire string using the inverse of the encryption rules
+    return ''.join(decrypt_char(c, n, m) for c in text)
+
+def main():
+    # Main function to perform file reading, encryption, decryption, and file writing
+    input_file = "raw_text.txt"
+    encrypted_file = "encrypted_text.txt"
+    decrypted_file = "decrypted_text.txt"
+
+    # Get user inputs for encryption
+    try:
+        n = int(input("Enter value for n (positive integer): "))
+        m = int(input("Enter value for m (positive integer): "))
+    except ValueError:
+        print("Error: Both n and m must be integers.")
+        return
+
+    try:
+        with open(input_file, "r") as infile:
+            raw_text = infile.read()
+
+        # Encrypt and save
+        encrypted = encrypt_text(raw_text, n, m)
+        with open(encrypted_file, "w") as ef:
+            ef.write(encrypted)
+
+        # Decrypt and save
+        decrypted = decrypt_text(encrypted, n, m)
+        with open(decrypted_file, "w") as df:
+            df.write(decrypted)
+
+        # Verification
+        if decrypted == raw_text:
+            print("Decryption successful. Output matches the original.")
+        else:
+            print("Decryption failed. Output does not match the original.")
+
+    except FileNotFoundError:
+        print(f"Error: File '{input_file}' not found.")
+    except Exception as e:
+        print(f"Unexpected error occurred: {e}")
+
+# Run the main program
+if __name__ == "__main__":
+    main()
