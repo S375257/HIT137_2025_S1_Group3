@@ -24,12 +24,7 @@ else:
             else: 
                 coded_msg += item              # Keep other characters unchanged
 
-          # If the file 'encrypted_text.txt' does not exist, create an empty one
-        if not os.path.exists('encrypted_text.txt'):
-            with open('encrypted_text.txt', 'w', encoding='utf-8') as encrypted:
-                pass                  # Create an empty file if it doesn't exist
-
-                        # Now write the encrypted message to 'encrypted_text.txt'
+         # Now write the encrypted message to 'encrypted_text.txt'
         with open('encrypted_text.txt', 'w', encoding='utf-8') as encrypted:
             encrypted.write(coded_msg) # Write the encrypted message to the file
             print('The message is encrypted') 
@@ -74,7 +69,6 @@ else:
         coded_char = ''
         if ord(item) - steps < low_limit:               # If the shift exceeds the lower limit
             coded_char = chr(high_limit - (high_limit - (ord(item) - steps)) % 13)  # Calculate with mod 13 cycle
-            coded_char = chr(high_limit - (high_limit - (ord(item) - steps))%13)
         else: 
             coded_char = chr(ord(item) - steps)  # If it doesn't exceed, simply shift backward
         return coded_char
