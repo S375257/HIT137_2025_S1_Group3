@@ -1,3 +1,5 @@
+import os
+
 def encrypt_char(char, n, m):
     # Encrypt a single character based on its type and rules
     if char.islower():
@@ -40,6 +42,11 @@ def main():
         print("Error: Both n and m must be integers.")
         return
 
+    # Check if raw_text file exists
+    if not os.path.exists(input_file):
+        print(f"Error: Input file '{input_file}' not found. Please make sure it exists in the same directory.")
+        return
+
     try:
         with open(input_file, "r") as infile:
             raw_text = infile.read()
@@ -60,8 +67,6 @@ def main():
         else:
             print("Decryption failed. Output does not match the original.")
 
-    except FileNotFoundError:
-        print(f"Error: File '{input_file}' not found.")
     except Exception as e:
         print(f"Unexpected error occurred: {e}")
 
