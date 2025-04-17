@@ -1,0 +1,8 @@
+Station with the Largest Temperature Range:
+
+Name: WAGGA-WAGGA-AMO
+ID: Unknown
+Latitude: -35.16
+Longitude: 147.46
+Year Range File: stations_group_2000.csv
+Range: 21.07
