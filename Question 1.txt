@@ -35,11 +35,18 @@ def main():
     decrypted_file = "decrypted_text.txt"
 
     # Get user inputs for encryption
+    print("Encryption requires two numbers.")
+
     try:
-        n = int(input("Enter value for n (positive integer): "))
-        m = int(input("Enter value for m (positive integer): "))
+        n = int(input("Enter a number value for n: "))
+        m = int(input("Enter a number value for m: "))
+
+        if n <= 0 or m <= 0:
+            print("Error: Both numbers must be greater than zero.")
+           return
+
     except ValueError:
-        print("Error: Both n and m must be integers.")
+        print("Error: Please enter whole numbers only.")
         return
 
     # Check if raw_text file exists
