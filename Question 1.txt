@@ -30,7 +30,7 @@ def decrypt_text(text, n, m):
 
 def main():
     # Main function to perform file reading, encryption, decryption, and file writing
-    input_file = "raw_text.txt"
+    input_file = input("Enter the full path to the raw_text.txt file (e.g., C:/Users/Louisa/Documents/raw_text.txt): ").strip()
     encrypted_file = "encrypted_text.txt"
     decrypted_file = "decrypted_text.txt"
 
