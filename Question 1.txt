@@ -43,7 +43,7 @@ def main():
 
         if n <= 0 or m <= 0:
             print("Error: Both numbers must be greater than zero.")
-           return
+            return
 
     except ValueError:
         print("Error: Please enter whole numbers only.")
