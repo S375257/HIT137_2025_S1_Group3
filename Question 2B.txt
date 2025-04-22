@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 from collections import defaultdict
+import zipfile
 
 # Define month-to-season mapping
 season_months = {
@@ -11,17 +12,17 @@ season_months = {
     "Spring": ["September", "October", "November"]
 }
 
-def validate_directory_structure(base_dir):
-    if not os.path.exists(base_dir):
-        raise FileNotFoundError(f"Data folder not found: {base_dir}\n"
-                                "Please ensure your folder structure is:\n"
-                                "your_project_folder/\n"
-                                "├── temperature_analysis.py\n"
-                                "└── temperature_data/\n"
-                                "    └── temperature_data/\n"
-                                "        ├── stations_group_1986.csv\n"
-                                "        └── ...")
-    return True
+def get_data_folder():
+    path = input("Enter the path to the folder containing the CSV files or a .zip file: ").strip()
+    if path.endswith('.zip'):
+        extract_path = os.path.join(os.path.dirname(path), "extracted_temperature_data")
+        with zipfile.ZipFile(path, 'r') as zip_ref:
+            zip_ref.extractall(extract_path)
+        return extract_path
+    elif os.path.isdir(path):
+        return path
+    else:
+        raise FileNotFoundError("The specified path is neither a valid folder nor a zip file.")
 
 def load_temperature_data(data_folder):
     station_data = defaultdict(lambda: {
@@ -114,8 +115,7 @@ def write_extremes_to_file(results, station_info):
             f.write(f"{format_station_line(station)}\n")
 
 def main():
-    data_folder = "temperature_data/temperature_data"
-    validate_directory_structure(data_folder)
+    data_folder = get_data_folder()
     station_data, station_info = load_temperature_data(data_folder)
 
     # Calculate and save seasonal averages
