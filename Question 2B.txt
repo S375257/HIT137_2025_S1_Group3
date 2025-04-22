@@ -14,18 +14,12 @@ season_months = {
 def validate_directory_structure(base_dir):
     if not os.path.exists(base_dir):
         raise FileNotFoundError(f"Data folder not found: {base_dir}\n"
-                                "Please ensure your folder structure is:
-"
-                                "your_project_folder/
-"
-                                "├── temperature_analysis.py
-"
-                                "└── temperature_data/
-"
-                                "    └── temperature_data/
-"
-                                "        ├── stations_group_1986.csv
-"
+                                "Please ensure your folder structure is:\n"
+                                "your_project_folder/\n"
+                                "├── temperature_analysis.py\n"
+                                "└── temperature_data/\n"
+                                "    └── temperature_data/\n"
+                                "        ├── stations_group_1986.csv\n"
                                 "        └── ...")
     return True
 
@@ -34,17 +28,24 @@ def load_temperature_data(data_folder):
         "monthly_temps": defaultdict(list),
         "all_temps": []
     })
+    station_info = {}
     csv_files = [f for f in os.listdir(data_folder) if f.endswith('.csv')]
     for file in csv_files:
         df = pd.read_csv(os.path.join(data_folder, file))
         for _, row in df.iterrows():
             station = row["STATION_NAME"]
+            if station not in station_info:
+                station_info[station] = {
+                    "id": row["STN_ID"],
+                    "lat": row["LAT"],
+                    "lon": row["LON"]
+                }
             for month in sum(season_months.values(), []):
                 temp = row[month]
                 if pd.notnull(temp):
                     station_data[station]["monthly_temps"][month].append(temp)
                     station_data[station]["all_temps"].append(temp)
-    return station_data
+    return station_data, station_info
 
 def calculate_seasonal_averages(station_data):
     season_averages = {}
@@ -91,27 +92,31 @@ def analyze_station_extremes(station_data):
         }
     }
 
-def write_extremes_to_file(results):
+def write_extremes_to_file(results, station_info):
+    def format_station_line(name):
+        info = station_info.get(name, {})
+        return f"{name} - STATION ID # {info.get('id', 'N/A')} - LAT: {info.get('lat', 'N/A')} LON: {info.get('lon', 'N/A')}"
+
     with open("largest_temp_range_station.txt", "w") as f:
         f.write("Station(s) with the Largest Temperature Range:\n")
         f.write(f"Range: {results['largest_range']['value']:.2f}°C\n")
         for station in results['largest_range']['stations']:
-            f.write(f"{station}\n")
+            f.write(f"{format_station_line(station)}\n")
 
     with open("warmest_and_coolest_station.txt", "w") as f:
         f.write("Warmest Station(s):\n")
         f.write(f"Average Temp: {results['warmest']['value']:.2f}°C\n")
         for station in results['warmest']['stations']:
-            f.write(f"{station}\n")
+            f.write(f"{format_station_line(station)}\n")
         f.write("\nCoolest Station(s):\n")
         f.write(f"Average Temp: {results['coolest']['value']:.2f}°C\n")
         for station in results['coolest']['stations']:
-            f.write(f"{station}\n")
+            f.write(f"{format_station_line(station)}\n")
 
 def main():
     data_folder = "temperature_data/temperature_data"
     validate_directory_structure(data_folder)
-    station_data = load_temperature_data(data_folder)
+    station_data, station_info = load_temperature_data(data_folder)
 
     # Calculate and save seasonal averages
     season_averages = calculate_seasonal_averages(station_data)
@@ -119,7 +124,7 @@ def main():
 
     # Calculate and save extremes
     extremes = analyze_station_extremes(station_data)
-    write_extremes_to_file(extremes)
+    write_extremes_to_file(extremes, station_info)
 
 if __name__ == "__main__":
     main()
