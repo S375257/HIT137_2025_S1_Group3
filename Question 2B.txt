@@ -115,10 +115,10 @@ def write_extremes_to_file(results, station_info):
             f.write(f"{format_station_line(station)}\n")
 
 def main():
-    data_folder = "mnt/data/temperature_data/temperature_data"
+    data_folder = get_data_folder()
     station_data, station_info = load_temperature_data(data_folder)
     season_averages = calculate_seasonal_averages(station_data)
-    write_average_temperatures_to_file(season_averages, "mnt/data/average_temp.txt")
+    write_average_temperatures_to_file(season_averages, "average_temp.txt")
     extremes = analyze_station_extremes(station_data)
     write_extremes_to_file(extremes, station_info)
 
