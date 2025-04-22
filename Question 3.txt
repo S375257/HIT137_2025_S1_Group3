@@ -27,7 +27,8 @@ left_angle = float(input("Enter left branch angle (degrees): "))
 right_angle = float(input("Enter right branch angle (degrees): "))
 initial_length = float(input("Enter starting branch length (pixels): "))
 depth = int(input("Enter recursion depth (e.g., 5): "))
-reduction_factor = float(input("Enter branch length reduction factor (e.g., 0.7): "))
+reduction_percent = float(input("Enter branch length reduction percentage (e.g., 70 for 70%): "))
+reduction_factor = reduction_percent / 100
 
 # ===== Turtle Setup =====
 turtle.speed("fastest")
