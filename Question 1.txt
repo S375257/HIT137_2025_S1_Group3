@@ -30,6 +30,8 @@ def decrypt_text(text, n, m):
 
 def main():
     # Main function to perform file reading, encryption, decryption, and file writing
+    print(f"Current working directory: {os.getcwd()}")
+    
     input_file = input("Enter the full path to the raw_text.txt file (e.g., C:/Users/Louisa/Documents/raw_text.txt): ").strip()
     encrypted_file = "encrypted_text.txt"
     decrypted_file = "decrypted_text.txt"
@@ -55,6 +57,8 @@ def main():
         return
 
     try:
+        print("Starting encryption process...")
+
         with open(input_file, "r") as infile:
             raw_text = infile.read()
 
@@ -68,14 +72,21 @@ def main():
         with open(decrypted_file, "w") as df:
             df.write(decrypted)
 
-        # Verification
+        # Output results
+        print("Encryption and decryption completed.")
+        print(f"Encrypted file saved to: {os.path.abspath(encrypted_file)}")
+        print(f"Decrypted file saved to: {os.path.abspath(decrypted_file)}")
+
         if decrypted == raw_text:
-            print("Decryption successful. Output matches the original.")
+            print("✅ Decryption successful. Output matches the original.")
         else:
-            print("Decryption failed. Output does not match the original.")
+            print("❌ Decryption failed. Output does not match the original.")
 
     except Exception as e:
-        print(f"Unexpected error occurred: {e}")
+        print(f"Unexpected error occurred: {type(e).__name__} - {e}")
+
+        # Pause before closing
+    input("Press Enter to exit...")
 
 # Run the main program
 if __name__ == "__main__":
