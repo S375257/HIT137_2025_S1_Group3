@@ -30,26 +30,24 @@ def decrypt_text(text, n, m):
 
 def main():
     # Main function to perform file reading, encryption, decryption, and file writing
-    print(f"Current working directory: {os.getcwd()}")
-    
-    input_file = input("Enter the full path to the raw_text.txt file (e.g., C:/Users/Louisa/Documents/raw_text.txt): ").strip()
+    folder_path = input("Enter the folder where 'raw_text.txt' is located (e.g., C:/Users/John/Desktop/Working Files): ").strip()
+    input_file = os.path.join(folder_path, "raw_text.txt")
     encrypted_file = "encrypted_text.txt"
     decrypted_file = "decrypted_text.txt"
 
     # Get user inputs for encryption
     print("Encryption requires two numbers.")
 
-    try:
-        n = int(input("Enter a number value for n: "))
-        m = int(input("Enter a number value for m: "))
-
-        if n <= 0 or m <= 0:
-            print("Error: Both numbers must be greater than zero.")
-            return
-
-    except ValueError:
-        print("Error: Please enter whole numbers only.")
-        return
+    while True:
+        try:
+            n = int(input("Enter a whole positive number for n: "))
+            m = int(input("Enter a whole positive number for m: "))
+            if n > 0 and m > 0:
+                break  # Exit loop if values are valid
+            else:
+                print("Both numbers must be greater than zero. Please try again.")
+        except ValueError:
+            print("Invalid input. Please enter whole numbers only.")
 
     # Check if raw_text file exists
     if not os.path.exists(input_file):
@@ -78,9 +76,9 @@ def main():
         print(f"Decrypted file saved to: {os.path.abspath(decrypted_file)}")
 
         if decrypted == raw_text:
-            print("✅ Decryption successful. Output matches the original.")
+            print("Decryption successful. Output matches the original.")
         else:
-            print("❌ Decryption failed. Output does not match the original.")
+            print("Decryption failed. Output does not match the original.")
 
     except Exception as e:
         print(f"Unexpected error occurred: {type(e).__name__} - {e}")
