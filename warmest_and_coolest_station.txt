@@ -1,15 +1,7 @@
-Warmest Station:
-Name: MARBLE-BAR
-Id: Unknown
-Lat: -21.18
-Lon: 119.75
-File: stations_group_1992.csv
-Avg_temp: 41.48
+Warmest Station(s):
+Average Temp: 37.40°C
+MARBLE-BAR - STATION ID # 4106 - LAT: -21.18 LON: 119.75
 
-Coolest Station:
-Name: CABRAMURRA-SMHEA-AWS
-Id: Unknown
-Lat: -35.94
-Lon: 148.38
-File: stations_group_1986.csv
-Avg_temp: 12.38
+Coolest Station(s):
+Average Temp: 13.42°C
+CABRAMURRA-SMHEA-AWS - STATION ID # 72161 - LAT: -35.94 LON: 148.38
