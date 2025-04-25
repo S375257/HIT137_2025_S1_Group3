@@ -1,3 +1,3 @@
 Station(s) with the Largest Temperature Range:
 Range: 24.45°C
-BOURKE-AIRPORT-AWS
+BOURKE-AIRPORT-AWS - STATION ID # 48245 - LAT: -30.04 LON: 145.95
