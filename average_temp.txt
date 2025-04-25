@@ -1,6 +1,5 @@
-Average Temperature by Season (°C):
-
-Summer: 32.10°C
+Average Seasonal Temperatures Across All Stations and Years:
+Summer: 32.1°C
 Autumn: 27.32°C
 Winter: 21.07°C
 Spring: 27.43°C
