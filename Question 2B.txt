@@ -122,5 +122,13 @@ def main():
     extremes = analyze_station_extremes(station_data)
     write_extremes_to_file(extremes, station_info)
 
+    output_path = os.path.abspath("average_temp.txt")
+    print(f"\nDone! Files saved to: {os.path.dirname(output_path)}")
+    input("\nPress Enter to exit...")
+
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(f"\nAn error occurred: {e}")
+        input("\nPress Enter to exit...")
